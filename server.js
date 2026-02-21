@@ -7,7 +7,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // Gemini API için fetch kullanacağız (Google'ın resmi kütüphanesi yerine)
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
