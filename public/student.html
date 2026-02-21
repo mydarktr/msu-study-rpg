@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSÜ Study RPG - Öğrenci Paneli</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .msu-badge {
+            background: #dc2626;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .countdown {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .countdown-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        
+        .stats-bar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .alert {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .alert h2 {
+            margin-bottom: 10px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #334155;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .ai-card {
+            border: 2px solid #8b5cf6;
+            background: linear-gradient(135deg, #1e293b 0%, #2d1b4e 100%);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        select, input {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-ai {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #0f172a;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .task-item:hover {
+            background: #334155;
+        }
+        
+        .task-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .task-meta {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        .task-points {
+            margin-left: auto;
+            background: #fbbf24;
+            color: #92400e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .question-box {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-red { background: #fee2e2; color: #991b1b; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-purple { background: #e9d5ff; color: #6b21a8; }
+        
+        .option-btn {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-btn:hover {
+            border-color: #8b5cf6;
+        }
+        
+        .option-btn.correct {
+            background: #065f46;
+            border-color: #10b981;
+        }
+        
+        .option-btn.wrong {
+            background: #991b1b;
+            border-color: #ef4444;
+        }
+        
+        .explanation {
+            background: #1e3a8a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .motivation-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 300px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+        
+        .msu-tip {
+            background: #fbbf24;
+            color: #92400e;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <h1>🎯 MSÜ Study RPG</h1>
+                <span id="welcomeText">Yükleniyor...</span>
+            </div>
+            <div class="msu-badge">🎖️ MSÜ MODU</div>
+            <div class="countdown">
+                <div class="countdown-number" id="daysLeft">7</div>
+                <div style="font-size: 12px;">GÜN KALDI</div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value" id="level">1</div>
+                    <div style="font-size: 12px;">SEVİYE</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="points">0</div>
+                    <div style="font-size: 12px;">PUAN</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="streak">0</div>
+                    <div style="font-size: 12px;">STREAK 🔥</div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="logout()">Çıkış</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="alert">
+            <h2>🚨 MSÜ Sınavına Son <span id="alertDays">7</span> Gün!</h2>
+            <p>Her gün çalışman çok kritik! AI sana özel program hazırladı.</p>
+        </div>
+
+        <!-- AI MSÜ Soru -->
+        <div class="card ai-card">
+            <div class="card-header">
+                <span style="font-size: 28px;">🤖</span>
+                <h2 class="card-title">AI MSÜ Sorusu Çöz</h2>
+            </div>
+            <div class="form-row">
+                <select id="aiSubject">
+                    <option value="Matematik">MSÜ Matematik</option>
+                    <option value="Fizik">MSÜ Fizik</option>
+                    <option value="Kimya">MSÜ Kimya</option>
+                    <option value="Biyoloji">MSÜ Biyoloji</option>
+                </select>
+                <select id="aiTopic">
+                    <option value="Sayı Basamakları">Sayı Basamakları</option>
+                    <option value="Bölme ve Bölünebilme">Bölme ve Bölünebilme</option>
+                    <option value="Rasyonel Sayılar">Rasyonel Sayılar</option>
+                    <option value="Ondalık Sayılar">Ondalık Sayılar</option>
+                </select>
+                <select id="aiDifficulty">
+                    <option value="1">Temel</option>
+                    <option value="2" selected>Orta</option>
+                    <option value="3">MSÜ Zor</option>
+                </select>
+                <button class="btn btn-ai" onclick="generateAIQuestion()">
+                    ✨ Yeni Soru
+                </button>
+            </div>
+            <div id="aiQuestionArea"></div>
+        </div>
+
+        <div class="grid">
+            <!-- MSÜ Programı -->
+            <div class="card">
+                <div class="card-header">
+                    <span style="font-size: 28px;">📚</span>
+                    <h2 class="card-title">MSÜ Programın</h2>
+                </div>
+                <div id="programsList">
+                    <p style="color: #94a3b8;">Program yükleniyor...</p>
+                </div>
+            </div>
+
+            <!-- Günlük Görevler -->
+            <div class="card">
+                <div class="card-header">
+                    <span style="font-size: 28px;">✅</span>
+                    <h2 class="card-title">Bugünün Görevleri</h2>
+                </div>
+                <div id="tasksList">
+                    <p style="color: #94a3b8;">Görevler yükleniyor...</p>
+                </div>
+            </div>
+
+            <!-- Zayıf Konular -->
+            <div class="card">
+                <div class="card-header">
+                    <span style="font-size: 28px;">🎯</span>
+                    <h2 class="card-title">Zayıf Olduğun Konular</h2>
+                </div>
+                <div id="weakTopicsList" style="margin-bottom: 15px;">
+                    <p style="color: #94a3b8;">Analiz ediliyor...</p>
+                </div>
+                <button class="btn btn-ai" onclick="generateMSUProgram()" style="width: 100%;">
+                    🤖 MSÜ'ye Özel Program Oluştur
+                </button>
+            </div>
+
+            <!-- Ödüller -->
+            <div class="card">
+                <div class="card-header">
+                    <span style="font-size: 28px;">🎁</span>
+                    <h2 class="card-title">Ödül Pazarı</h2>
+                </div>
+                <div id="rewardsList">
+                    <p style="color: #94a3b8;">Ödüller yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="motivation-toast" id="motivationToast">
+        <span id="motivationText"></span>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentQuestion = null;
+        let daysLeft = 7; // MSÜ'ye kalan gün
+
+        window.onload = async () => {
+            const userData = localStorage.getItem('user');
+            if (!userData) {
+                window.location.href = '/';
+                return;
+            }
+            
+            currentUser = JSON.parse(userData);
+            document.getElementById('welcomeText').textContent = `Hazır mısın, ${currentUser.name}? 🎖️`;
+            
+            // Gün sayısını hesapla (gerçek tarihten)
+            calculateDaysLeft();
+            
+            await loadUserData();
+            await loadPrograms();
+            await loadRewards();
+            await loadWeakTopics();
+        };
+
+        function calculateDaysLeft() {
+            // MSÜ tarihi: 2 Mart 2025 (örnek)
+            const msuDate = new Date('2025-03-02');
+            const today = new Date();
+            const diffTime = msuDate - today;
+            daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (daysLeft < 0) daysLeft = 0;
+            
+            document.getElementById('daysLeft').textContent = daysLeft;
+            document.getElementById('alertDays').textContent = daysLeft;
+        }
+
+        async function loadUserData() {
+            const res = await fetch(`/api/student/${currentUser.id}`);
+            const user = await res.json();
+            
+            document.getElementById('level').textContent = user.level;
+            document.getElementById('points').textContent = user.points;
+            document.getElementById('streak').textContent = user.streak || 0;
+            
+            currentUser = user;
+        }
+
+        async function loadPrograms() {
+            const res = await fetch('/api/programs/active');
+            const programs = await res.json();
+            
+            const msuPrograms = programs.filter(p => p.examType === 'MSÜ' || !p.examType);
+            
+            const container = document.getElementById('programsList');
+            
+            if (msuPrograms.length === 0) {
+                container.innerHTML = `
+                    <p style="color: #94a3b8;">Henüz MSÜ programın yok.</p>
+                    <button class="btn btn-ai" onclick="generateMSUProgram()" style="margin-top: 10px;">
+                        🤖 Hemen Oluştur
+                    </button>
+                `;
+                return;
+            }
+            
+            container.innerHTML = msuPrograms.map(p => `
+                <div class="task-item" onclick="loadProgramTasks('${p.id}')">
+                    <div class="task-info">
+                        <h4>${p.name}</h4>
+                        <div class="task-meta">
+                            ${p.subject} • ${p.daysLeft || 7} gün kaldı
+                            ${p.aiGenerated ? '• 🤖 AI' : ''}
+                        </div>
+                    </div>
+                    <div class="task-points">${p.totalPoints || 0} puan</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadProgramTasks(programId) {
+            const res = await fetch(`/api/tasks/program/${programId}`);
+            const tasks = await res.json();
+            
+            const container = document.getElementById('tasksList');
+            
+            // Bugünün görevlerini filtrele (örnek: gün 1)
+            const todayTasks = tasks.filter(t => t.dayNumber === 1 || !t.dayNumber);
+            
+            if (todayTasks.length === 0) {
+                container.innerHTML = '<p style="color: #94a3b8;">Bugün için görev yok.</p>';
+                return;
+            }
+            
+            container.innerHTML = todayTasks.map(t => `
+                <div class="task-item" onclick="completeTask('${t.id}', '${t.title}', '${t.topic}')">
+                    <div class="task-info">
+                        <h4>${t.title}</h4>
+                        <div class="task-meta">
+                            ${t.duration} dk • ${t.topic}
+                            ${t.resource ? `• 📖 ${t.resource}` : ''}
+                        </div>
+                    </div>
+                    <div class="task-points">+${t.basePoints}</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadRewards() {
+            const res = await fetch('/api/rewards');
+            const rewards = await res.json();
+            
+            const container = document.getElementById('rewardsList');
+            
+            if (rewards.length === 0) {
+                container.innerHTML = '<p style="color: #94a3b8;">Henüz ödül yok.</p>';
+                return;
+            }
+            
+            container.innerHTML = rewards.map(r => `
+                <div class="task-item">
+                    <div style="font-size: 24px; margin-right: 15px;">${r.icon}</div>
+                    <div class="task-info">
+                        <h4>${r.name}</h4>
+                        <div class="task-meta">${r.description}</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="claimReward('${r.id}', ${r.cost})"
+                            ${currentUser.points < r.cost ? 'disabled style="opacity: 0.5;"' : ''}>
+                        ${r.cost} Puan
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function loadWeakTopics() {
+            const res = await fetch(`/api/student/${currentUser.id}/weak-topics`);
+            const data = await res.json();
+            
+            const container = document.getElementById('weakTopicsList');
+            
+            if (data.weakTopics.length === 0) {
+                container.innerHTML = '<span style="color: #10b981;">🎉 Harika! Zayıf konun yok!</span>';
+            } else {
+                container.innerHTML = data.weakTopics.map(t => 
+                    `<span class="badge badge-red" style="margin: 3px; display: inline-block;">${t}</span>`
+                ).join('');
+            }
+        }
+
+        async function generateAIQuestion() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Üretiliyor...';
+            
+            const subject = document.getElementById('aiSubject').value;
+            const topic = document.getElementById('aiTopic').value;
+            const difficulty = document.getElementById('aiDifficulty').value;
+            
+            try {
+                const res = await fetch('/api/ai/generate-question', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject, topic, difficulty })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    currentQuestion = data.question;
+                    displayQuestion(data.question);
+                }
+            } catch (error) {
+                alert('Soru üretilemedi!');
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '✨ Yeni Soru';
+        }
+
+        function displayQuestion(q) {
+            const container = document.getElementById('aiQuestionArea');
+            
+            container.innerHTML = `
+                <div class="question-box">
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <span class="badge badge-purple">${q.topic}</span>
+                        <span class="badge badge-${q.difficulty === 1 ? 'green' : q.difficulty === 2 ? 'yellow' : 'red'}">
+                            ${q.difficulty === 3 ? 'MSÜ ZOR' : q.difficulty === 2 ? 'ORTA' : 'TEMEL'}
+                        </span>
+                        <span class="badge badge-purple">🤖 AI</span>
+                    </div>
+                    <h3 style="margin-bottom: 15px; line-height: 1.6;">${q.question}</h3>
+                    <div id="options">
+                        ${q.options.map((opt, i) => `
+                            <button class="option-btn" onclick="checkAnswer(${i})">
+                                <strong>${String.fromCharCode(65 + i)})</strong> ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="explanation" style="display: none;"></div>
+                </div>
+            `;
+        }
+
+        async function checkAnswer(selected) {
+            if (!currentQuestion) return;
+            
+            const res = await fetch('/api/questions/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    questionId: currentQuestion.id,
+                    answer: selected
+                })
+            });
+            
+            const data = await res.json();
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === data.correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (i === selected && !data.correct) {
+                    btn.classList.add('wrong');
+                }
+            });
+            
+            const expDiv = document.getElementById('explanation');
+            expDiv.innerHTML = `
+                <div class="explanation">
+                    <h4>${data.correct ? '✅ Doğru!' : '❌ Yanlış!'}</h4>
+                    <p>${data.explanation}</p>
+                    ${data.formula ? `<p><strong>Formül:</strong> ${data.formula}</p>` : ''}
+                    ${data.correct ? `<p style="color: #fbbf24; margin-top: 10px;"><strong>+${data.points} puan!</strong></p>` : ''}
+                </div>
+                ${data.msuTip ? `<div class="msu-tip">🎖️ MSÜ İpucu: ${data.msuTip}</div>` : ''}
+            `;
+            expDiv.style.display = 'block';
+            
+            if (data.correct) {
+                await fetch('/api/tasks/complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: currentUser.id,
+                        taskId: currentQuestion.id,
+                        correct: true,
+                        topic: currentQuestion.topic,
+                        duration: 5,
+                        daysLeft: daysLeft
+                    })
+                });
+                
+                loadUserData();
+                showMotivation(data.motivation || '🎉 MSÜ senin olacak!');
+            }
+        }
+
+        async function completeTask(taskId, title, topic) {
+            const duration = prompt(`${title} için kaç dakika çalıştın?`, '45');
+            if (!duration) return;
+            
+            const net = prompt('Kaç net yaptın?', '5');
+            
+            const res = await fetch('/api/tasks/complete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.id,
+                    taskId,
+                    duration: parseInt(duration),
+                    netCount: parseInt(net),
+                    correct: parseInt(net) > 0,
+                    topic,
+                    daysLeft: daysLeft
+                })
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                loadUserData();
+                showMotivation(data.motivation);
+                
+                if (data.leveledUp) {
+                    setTimeout(() => {
+                        alert(`🎉 Seviye Atladın! Yeni seviyen: ${data.newLevel}`);
+                    }, 500);
+                }
+            }
+        }
+
+        async function generateMSUProgram() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '🤖 Analiz ediliyor...';
+            
+            const weakRes = await fetch(`/api/student/${currentUser.id}/weak-topics`);
+            const weakData = await weakRes.json();
+            
+            const res = await fetch('/api/ai/generate-program', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subject: 'Matematik',
+                    weakTopics: weakData.weakTopics,
+                    dailyHours: 4,
+                    daysLeft: daysLeft
+                })
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                alert(`✅ ${data.program.name} oluşturuldu!`);
+                loadPrograms();
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '🤖 MSÜ\'ye Özel Program Oluştur';
+        }
+
+        async function claimReward(rewardId, cost) {
+            if (!confirm(`${cost} puan karşılığında ödül talep edilsin mi?`)) return;
+            
+            const res = await fetch('/api/rewards/claim', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.id,
+                    rewardId
+                })
+            });
+            
+            const data = await res.json();
+            alert(data.message);
+            loadUserData();
+        }
+
+        function showMotivation(text) {
+            const toast = document.getElementById('motivationToast');
+            document.getElementById('motivationText').textContent = text;
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

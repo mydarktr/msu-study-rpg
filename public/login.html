@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSÜ Study RPG - Giriş</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        
+        .logo {
+            font-size: 72px;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        h1 {
+            color: white;
+            margin-bottom: 5px;
+            font-size: 32px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .msu-badge {
+            background: #dc2626;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: #0f172a;
+            padding: 6px;
+            border-radius: 12px;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        .role-btn.active {
+            background: #334155;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 16px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+        
+        input::placeholder {
+            color: #64748b;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        .error {
+            color: #f87171;
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(248, 113, 113, 0.1);
+            border-radius: 8px;
+            display: none;
+            font-size: 14px;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+        
+        .info-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: left;
+            border: 1px solid #334155;
+        }
+        
+        .info-box strong {
+            color: white;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        code {
+            background: #334155;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: #60a5fa;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .countdown-banner {
+            background: linear-gradient(90deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .countdown-number {
+            font-size: 28px;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🎖️</div>
+        <h1>MSÜ STUDY RPG</h1>
+        <p class="subtitle">Yapay Zeka Destekli MSÜ Hazırlık Sistemi</p>
+        
+        <div class="msu-badge">🚀 GEMINI AI AKTİF</div>
+        
+        <div class="countdown-banner">
+            MSÜ Sınavına Son
+            <span class="countdown-number" id="countdown">7 Gün</span>
+        </div>
+        
+        <div class="role-selector">
+            <button type="button" class="role-btn active" onclick="setRole('student')">
+                👨‍🎓 Öğrenci
+            </button>
+            <button type="button" class="role-btn" onclick="setRole('admin')">
+                👨‍💼 Baba (Admin)
+            </button>
+        </div>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label>Kullanıcı Adı</label>
+                <input type="text" id="username" placeholder="Kullanıcı adınızı girin" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Şifre</label>
+                <input type="password" id="password" placeholder="Şifrenizi girin" required>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                Giriş Yap 🚀
+            </button>
+            
+            <div class="error" id="error"></div>
+        </form>
+        
+        <div class="info-box">
+            <strong>Varsayılan Giriş Bilgileri:</strong>
+            <div class="info-row">
+                <span>👨‍🎓 Öğrenci</span>
+                <code>ogrenci / 123456</code>
+            </div>
+            <div class="info-row">
+                <span>👨‍💼 Admin (Baba)</span>
+                <code>baba / admin123</code>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedRole = 'student';
+        
+        // MSÜ tarihini hesapla (2 Mart 2025 varsayım)
+        function updateCountdown() {
+            const msuDate = new Date('2025-03-02');
+            const today = new Date();
+            const diffTime = msuDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            const days = diffDays > 0 ? diffDays : 0;
+            document.getElementById('countdown').textContent = days + ' Gün';
+        }
+        
+        updateCountdown();
+        
+        function setRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (role === 'admin') {
+                document.getElementById('username').value = 'baba';
+                document.getElementById('password').value = 'admin123';
+            } else {
+                document.getElementById('username').value = 'ogrenci';
+                document.getElementById('password').value = '123456';
+            }
+        }
+        
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Role göre yönlendir
+                    if (data.user.role === 'admin') {
+                        window.location.href = '/admin';
+                    } else {
+                        window.location.href = '/student';
+                    }
+                } else {
+                    showError(data.message || 'Giriş başarısız!');
+                }
+            } catch (err) {
+                showError('Sunucuya bağlanılamadı! İnternet bağlantını kontrol et.');
+            }
+        });
+        
+        function showError(msg) {
+            const err = document.getElementById('error');
+            err.textContent = msg;
+            err.style.display = 'block';
+            
+            setTimeout(() => {
+                err.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
